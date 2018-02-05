@@ -7,6 +7,7 @@ package audioviz;
 
 import java.io.File;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -16,6 +17,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -28,7 +31,7 @@ import javafx.util.Duration;
 /**
  * FXML Controller class
  *
- * @author dale
+ * @author dale, Joe Wong
  * Music: http://www.bensound.com/royalty-free-music
  * http://www.audiocheck.net/testtones_sinesweep20-20k.php
  * http://stackoverflow.com/questions/11994366/how-to-reference-primarystage
@@ -77,6 +80,8 @@ public class PlayerController implements Initializable {
     private ArrayList<Visualizer> visualizers;
     private Visualizer currentVisualizer;
     private final Integer[] bandsList = {1, 2, 4, 8, 16, 20, 40, 60, 100, 120, 140};
+    
+    private DecimalFormat df = new DecimalFormat("0.0");
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -165,9 +170,9 @@ public class PlayerController implements Initializable {
     
     private void handleReady() {
         Duration duration = mediaPlayer.getTotalDuration();
-        lengthText.setText(duration.toString());
+        lengthText.setText(df.format(duration.toMillis()));
         Duration ct = mediaPlayer.getCurrentTime();
-        currentText.setText(ct.toString());
+        currentText.setText(df.format(ct.toMillis()));
         currentVisualizer.start(numBands, vizPane);
         timeSlider.setMin(0);
         timeSlider.setMax(duration.toMillis());
@@ -182,7 +187,7 @@ public class PlayerController implements Initializable {
     private void handleUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
         Duration ct = mediaPlayer.getCurrentTime();
         double ms = ct.toMillis();
-        currentText.setText(Double.toString(ms));
+        currentText.setText(df.format(ms));
         if(!timeSlider.isValueChanging()){
             timeSlider.setValue(ms);
         }
@@ -222,11 +227,10 @@ public class PlayerController implements Initializable {
     
     @FXML
     private void handleDrag(){
-        System.out.println(timeSlider.getValue());
-    }
-    
-    @FXML
-    private void handleDrop(){
-        
+        if (mediaPlayer != null){
+            Duration ct = Duration.millis(timeSlider.getValue());
+            mediaPlayer.seek(ct);
+            currentText.setText(df.format(ct.toMillis()));
+        }
     }
 }

@@ -44,7 +44,7 @@
                </font></Text>
             <Label layoutX="31.0" layoutY="161.0" text="Bands:" />
             <Text fx:id="bandsText" layoutX="86.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-            <Slider fx:id="timeSlider" layoutX="266.0" layoutY="63.0" onDragDetected="#handleDrag" onDragOver="#handleDrag" prefHeight="16.0" prefWidth="476.0" />
+            <Slider fx:id="timeSlider" layoutX="266.0" layoutY="63.0" onMouseClicked="#handleDrag" onMouseDragged="#handleDrag" prefHeight="16.0" prefWidth="476.0" />
          </children>
       </AnchorPane>
    </children>

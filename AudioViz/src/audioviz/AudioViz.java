@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author dale
+ * @author dale, Joe Wong
  */
 public class AudioViz extends Application {
     
