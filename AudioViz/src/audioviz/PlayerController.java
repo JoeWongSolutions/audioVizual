@@ -187,8 +187,8 @@ public class PlayerController implements Initializable {
     private void handleUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
         Duration ct = mediaPlayer.getCurrentTime();
         double ms = ct.toMillis();
-        currentText.setText(df.format(ms));
         if(!timeSlider.isValueChanging()){
+            currentText.setText(df.format(ms));            
             timeSlider.setValue(ms);
         }
         currentVisualizer.update(timestamp, duration, magnitudes, phases);
@@ -227,6 +227,13 @@ public class PlayerController implements Initializable {
     
     @FXML
     private void handleDrag(){
+        if (mediaPlayer != null){
+            currentText.setText(df.format(Duration.millis(timeSlider.getValue()).toMillis()));
+        }
+    }
+    
+    @FXML
+    private void handleDragDone(){
         if (mediaPlayer != null){
             Duration ct = Duration.millis(timeSlider.getValue());
             mediaPlayer.seek(ct);
